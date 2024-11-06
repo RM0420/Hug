@@ -3,19 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Custom Search Engine</title>
-    <!-- Google CSE script -->
+    <title>Google CSE with Embedded Links</title>
     <script async src="https://cse.google.com/cse.js?cx=218da9ba59fa8406f"></script>
     <style>
-        /* Optional: Customize the search box and results styling */
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .gcse-search { margin-top: 20px; }
+        /* Basic layout styling */
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; }
+        h1 { margin-top: 20px; }
+        #content { display: flex; width: 90%; max-width: 1200px; }
+        #search-container { width: 40%; padding-right: 20px; }
+        #iframe-container { width: 60%; }
+        iframe { width: 100%; height: 600px; border: none; }
     </style>
 </head>
 <body>
     <h1>Search the Web with Google CSE</h1>
-    <p>Use the search box below to find results without leaving this page:</p>
-    <!-- Google CSE search box and results area -->
-    <div class="gcse-search"></div>
+    <p>Use the search bar, and results will open on the right without losing the search page.</p>
+    
+    <!-- Content Container -->
+    <div id="content">
+        <!-- Search Box and Results Area -->
+        <div id="search-container">
+            <div class="gcse-search" data-resultsUrl="_self"></div>
+        </div>
+        
+        <!-- Iframe to display clicked links -->
+        <div id="iframe-container">
+            <iframe id="result-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Intercept search result links to load them in the iframe
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href.includes('google.com/url')) {
+                e.preventDefault();
+                document.getElementById('result-frame').src = link.href;
+            }
+        });
+    </script>
 </body>
 </html>
+
